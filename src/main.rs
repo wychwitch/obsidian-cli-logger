@@ -25,6 +25,8 @@ struct Args {
 #[derive(clap::Subcommand, Debug)]
 enum Action {
     /// Log to a specified file. USAGE: obs log <TEXT>
+    ///
+    /// Log argument, sends the string to the obsidian
     Log { body: String },
     /// set the api-key USAGE: obs key <API_KEY>
     Key { api_key: String },
@@ -57,6 +59,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
         Err(_) => PreferencesMap::new(),
     };
 
+    //Parsing the arguments passed to program
     let args = Args::parse();
     match args.action {
         Action::Log { body } => {
@@ -112,6 +115,7 @@ async fn send_log(authorization: &str, body: &str, target: &str) -> Result<(), B
     let client = reqwest::Client::new();
     println!("{}", target);
     let res = client
+        // only http is supported for now
         .post("http://127.0.0.1:27123".to_string() + target)
         .header("Accept", "*/*")
         .header("Authorization", "Bearer ".to_string() + authorization)
@@ -122,6 +126,8 @@ async fn send_log(authorization: &str, body: &str, target: &str) -> Result<(), B
         .await?
         .text()
         .await?;
+    //prints the result to stout
+    //todo make this prettier??
     println!("{:}", res);
     Ok(())
 }
