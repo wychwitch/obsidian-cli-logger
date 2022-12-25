@@ -46,8 +46,9 @@ async fn main() -> Result<(), Box<dyn Error>> {
             if set.contains_key("api_key") {
                 checked_set.insert("api_key".to_string(), set["api_key"].to_string());
             }
-            if set.contains_key("target_files") {
-                checked_set.insert("target_files".to_string(), set["target_file"].to_string());
+            //TODO add support for multiple targets with ids
+            if set.contains_key("target_file") {
+                checked_set.insert("target_file".to_string(), set["target_file"].to_string());
             } else {
                 checked_set.insert("target_file".to_string(), "/periodic/daily/".to_string());
             }
